@@ -18,7 +18,7 @@ def init_tcp_socket_server(ip, port):
         client, addr = server.accept()
         print(f"received connection from {addr[0]}:{addr[1]}")
         # create client thread to handling received data
-        client_handler = threading.Thread(target=handle_client, args=(client,))
+        client_handler = threading.Thread(target=__handle_client, args=(client,))
         client_handler.start()
 
 
