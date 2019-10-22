@@ -3,7 +3,7 @@ import socket
 from utils.basic.parser import default_tcp_client_args
 
 
-def init_tcp_socket_client(host, port):
+def init_tcp_socket_client(host, port, data):
     # AF_INET => specify type of addresses that socket can communicate (IPv4 address and port number for INET)
     # SOCK_STREAM => specify connection-oriented TCP protocol
 
@@ -15,7 +15,7 @@ def init_tcp_socket_client(host, port):
     client.connect((host, port))
 
     # Encode string into bytes representation
-    encoded_str = str.encode(f"GET / HTTP/1.1\r\nHOST: {host}\r\n\r\n")
+    encoded_str = str.encode(data)
 
     # Send data over TCP
     client.send(encoded_str)
@@ -30,7 +30,8 @@ parser = default_tcp_client_args()
 
 target_host = parser.host
 target_port = parser.port
+target_data = parser.data
 
-resp = init_tcp_socket_client(target_host, target_port)
+resp = init_tcp_socket_client(target_host, target_port, target_data)
 
 print(resp)

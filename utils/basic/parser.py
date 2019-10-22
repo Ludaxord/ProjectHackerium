@@ -3,13 +3,19 @@ from argparse import ArgumentParser
 
 def default_tcp_client_args():
     return Parser(args=[{"command": "--host", "type": str, "help": "target host"},
-                        {"command": "--port", "type": int, "help": "target port"}]).get_args()
+                        {"command": "--port", "type": int, "help": "target port"},
+                        {"command": "--data", "type": str, "help": "target data to send"}]).get_args()
 
 
 def default_udp_client_args():
     return Parser(args=[{"command": "--host", "type": str, "help": "target host"},
                         {"command": "--port", "type": int, "help": "target port"},
                         {"command": "--data", "type": str, "help": "target data to send"}]).get_args()
+
+
+def default_tcp_server_args():
+    return Parser(args=[{"command": "--ip", "type": str, "help": "bind ip"},
+                        {"command": "--port", "type": int, "help": "bind port"}]).get_args()
 
 
 class Parser:
