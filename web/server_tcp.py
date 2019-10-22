@@ -23,7 +23,7 @@ def init_tcp_socket_server(ip, port):
 
 
 # client exception handling
-def handle_client(client_socket):
+def __handle_client(client_socket):
     request = client_socket.recv(1024)  # print data sent by client
     print(f"received {request}")
     encoded_packet = str.encode("ACK")

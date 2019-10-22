@@ -25,8 +25,8 @@ class Parser:
     def __init__(self, args=None):
         if args is None:
             args = []
-        self.parser = self.init_parser()
-        self.add_args(args)
+        self.parser = self.__init_parser()
+        self.__add_args(args)
         self.args = self.parser.parse_args()
 
     def get_parser(self):
@@ -35,11 +35,11 @@ class Parser:
     def get_args(self):
         return self.args
 
-    def init_parser(self):
+    def __init_parser(self):
         parser = ArgumentParser()
         return parser
 
-    def add_args(self, args):
+    def __add_args(self, args):
         for arg in args:
             if isinstance(arg, dict):
                 arg_command = arg.get("command")
