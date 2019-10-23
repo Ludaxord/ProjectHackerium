@@ -15,7 +15,7 @@ class NetCat:
     port = 0
 
     def __usage(self):
-        print("BHP Net Tool")
+        print("NetCat Tool")
         print("usage:")
         print("-t - target host")
         print("-p - target port")
