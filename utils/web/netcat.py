@@ -36,6 +36,7 @@ class NetCat:
             self.__usage()
 
         try:
+            print(sys.argv)
             opts, args = getopt.getopt(sys.argv[1:], "hle:t:p:cu:",
                                        ["help", "listen", "execute", "target", "port", "command", "upload"])
             return opts, args
@@ -44,45 +45,42 @@ class NetCat:
             self.__usage()
 
     def __check_args(self, opts):
-        global listen
-        global port
-        global execute
-        global command
-        global upload_destination
-        global target
         for option, action in opts:
             if option in ("-h", "--help"):
                 self.__usage()
             elif option in ("-l", "--listen"):
-                listen = True
+                self.listen = True
             elif option in ("-e", "--execute"):
-                execute = action
+                self.execute = action
             elif option in ("-c", "--command"):
-                command = True
+                self.command = True
             elif option in ("-u", "--upload"):
-                upload_destination = action
+                self.upload_destination = action
             elif option in ("-t", "--target"):
-                target = action
+                self.target = action
             elif option in ("-p", "--port"):
-                port = int(action)
+                self.port = int(action)
             else:
                 assert False, "unsupported option"
 
-            return listen, port, execute, command, upload_destination, target
+        return self.listen, self.port, self.execute, self.command, self.upload_destination, self.target
 
     def __load_buffer(self, listen, target, port):
         # listen to data sent over stdin
-        if not listen and not len(target) and port > 0:
+        if not listen and len(target) and port > 0:
             # load buffer to command line
             # it makes block, use Ctrl + D if you are not sending data to stdin
             buffer = sys.stdin.read()
             #         send data
             self.client_sender(buffer, target, port)
             # listening or sending will be executing commands or turn on shell depends on options from command line
-            if listen:
-                self.server_loop()
+        if listen:
+            self.server_loop(target, port)
 
     def client_sender(self, buffer, target, port):
+        global upload
+        global execute
+        global command
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             #         connect with target host
@@ -94,7 +92,7 @@ class NetCat:
                 recv_len = 1
                 response = ""
                 while recv_len:
-                    data = client.recv(4096)
+                    data = client.recv(4096).decode("utf-8")
                     recv_len = len(data)
                     response += data
                     if recv_len < 4096:
@@ -107,8 +105,8 @@ class NetCat:
 
                 #         sending data
                 client.send(str.encode(buffer))
-        except:
-            print("[*] Exception occurred")
+        except socket.error as exc:
+            print(f"[*] Exception occurred {exc}")
             client.close()
 
     def server_loop(self, target, port):
@@ -127,12 +125,47 @@ class NetCat:
             client_thread.start()
 
     def run_command(self, command):
-        pass
+        command = command.rstrip()
+
+        try:
+            output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+        except:
+            output = "Cannot run command \r\n"
+        return output
 
     def client_handler(self, client_socket):
-        pass
+        if len(self.upload_destination):
+            file_buffer = ""
+            while True:
+                data = client_socket.recv(1024)
+
+                if not data:
+                    break
+                else:
+                    file_buffer += data
+
+            try:
+                file_descriptor = open(self.upload_destination, "wb")
+                file_descriptor.write(str.encode(file_buffer))
+                file_descriptor.close()
+
+                client_socket.send(f"file saved in {self.upload_destination}")
+            except:
+                client_socket.send(f"cannot save file in {self.upload_destination}")
+        if len(self.execute):
+            output = self.run_command(execute)
+            client_socket.send(output)
+        if self.command:
+            while True:
+                client_socket.send(str.encode("<NetCat:#> "))
+                cmd_buffer = ""
+                while "\n" not in cmd_buffer:
+                    cmd_buffer += client_socket.recv(1024).decode("utf-8")
+                response = self.run_command(cmd_buffer)
+                client_socket.send(response)
 
     def main(self):
         opts, args = self.get_args()
         self.listen, self.port, self.execute, self.command, self.upload_destination, self.target = self.__check_args(
             opts)
+        self.__load_buffer(self.listen, self.target, self.port)
