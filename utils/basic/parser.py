@@ -7,6 +7,14 @@ def default_tcp_client_args():
                         {"command": "--data", "type": str, "help": "target data to send"}]).get_args()
 
 
+def default_tcp_proxy_args():
+    return Parser(args=[{"command": "--host", "type": str, "help": "target host"},
+                        {"command": "--port", "type": int, "help": "target port"},
+                        {"command": "--localhost", "type": str, "help": "target host"},
+                        {"command": "--localport", "type": int, "help": "target port"},
+                        {"command": "--receivefirst", "type": bool, "help": "bool o receive first"}]).get_args()
+
+
 def default_udp_client_args():
     return Parser(args=[{"command": "--host", "type": str, "help": "target host"},
                         {"command": "--port", "type": int, "help": "target port"},

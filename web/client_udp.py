@@ -1,7 +1,7 @@
 import socket
 
 from utils.basic.parser import default_udp_client_args
-from utils.web.udp import UDP
+from utils.webservices.udp import UDP
 
 parser = default_udp_client_args()
 

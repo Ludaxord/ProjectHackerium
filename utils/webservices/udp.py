@@ -1,7 +1,7 @@
 import socket
 import sys
 
-from utils.web.protocol import Protocol
+from utils.webservices.protocol import Protocol
 
 
 class UDP(Protocol):
@@ -10,8 +10,9 @@ class UDP(Protocol):
     data = ""
 
     def __init__(self, host="", port=0, data=""):
-        opts, args = self.get_args()
-        temporary_host, temporary_port, temporary_data = self.check_args(opts)
+        opts, args = self.get_udp_args()
+        temporary_host, temporary_port, temporary_data, temporary_localhost, temporary_localport, temporary_receive_first = self.check_args(
+            opts)
         if host == self.host:
             self.host = temporary_host
         if port == self.port:

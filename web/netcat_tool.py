@@ -1,4 +1,4 @@
-from utils.web.netcat import NetCat
+from utils.webservices.netcat import NetCat
 
 netcat = NetCat()
 

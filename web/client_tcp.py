@@ -1,7 +1,5 @@
-import socket
-
 from utils.basic.parser import default_tcp_client_args
-from utils.web.tcp import TCP
+from utils.webservices.tcp import TCP
 
 parser = default_tcp_client_args()
 
