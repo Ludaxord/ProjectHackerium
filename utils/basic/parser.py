@@ -26,6 +26,21 @@ def default_tcp_server_args():
                         {"command": "--port", "type": int, "help": "bind port"}]).get_args()
 
 
+def default_ssh_command_args():
+    return Parser(args=[{"command": "--ip", "type": str, "help": "ssh connection ip"},
+                        {"command": "--user", "type": str, "help": "ssh connection username"},
+                        {"command": "--passwd", "type": str, "help": "ssh connection password"},
+                        {"command": "--port", "type": int, "help": "ssh connection port"},
+                        {"command": "--cmd", "type": str, "help": "ssh connection command to execute"}]).get_args()
+
+
+def default_ssh_active_command_args():
+    return Parser(args=[{"command": "--ip", "type": str, "help": "ssh connection ip"},
+                        {"command": "--user", "type": str, "help": "ssh connection username"},
+                        {"command": "--passwd", "type": str, "help": "ssh connection password"},
+                        {"command": "--port", "type": int, "help": "ssh connection port"}]).get_args()
+
+
 class Parser:
     parser = None
     args = []
