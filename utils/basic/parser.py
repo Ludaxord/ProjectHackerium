@@ -26,6 +26,10 @@ def default_tcp_server_args():
                         {"command": "--port", "type": int, "help": "bind port"}]).get_args()
 
 
+def default_sniffer_args():
+    return Parser(args=[{"command": "--ip", "type": str, "help": "bind ip"}]).get_args()
+
+
 def default_ssh_command_args():
     return Parser(args=[{"command": "--ip", "type": str, "help": "ssh connection ip"},
                         {"command": "--user", "type": str, "help": "ssh connection username"},
