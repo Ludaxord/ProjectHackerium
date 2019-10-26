@@ -22,7 +22,6 @@ class Sniffer:
         sniffer.bind((self.host, 0))
         sniffer.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
         #       call for windows to turn on unlimited mode IOCTL
-        print(os.name)
         if os.name == 'nt':
             sniffer.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
         print(sniffer.recvfrom(65565))
