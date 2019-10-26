@@ -30,6 +30,10 @@ def default_sniffer_args():
     return Parser(args=[{"command": "--ip", "type": str, "help": "bind ip"}]).get_args()
 
 
+def default_arp_poison_reader_args():
+    return Parser(args=[{"command": "--filename", "type": str, "help": "pcap filename"}]).get_args()
+
+
 def default_arp_poison_args():
     return Parser(args=[{"command": "--target_ip", "type": str, "help": "target ip"},
                         {"command": "--getaway_ip", "type": str, "help": "getaway ip"},
