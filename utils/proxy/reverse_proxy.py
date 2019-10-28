@@ -6,9 +6,6 @@ from utils.proxy.proxy import Proxy
 
 
 class ReverseProxy(Proxy):
-    port = -1
-    max_connection = 5
-    buffer_size = 4096
 
     def __init__(self, port):
         self.port = port
