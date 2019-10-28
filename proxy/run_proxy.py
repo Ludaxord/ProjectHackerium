@@ -7,3 +7,5 @@ parser = default_proxy_args()
 port = parser.port
 
 proxy = ReverseProxy(port)
+
+proxy.init_proxy()

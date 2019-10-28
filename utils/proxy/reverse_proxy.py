@@ -31,6 +31,7 @@ class ReverseProxy(Proxy):
             proxy_socket.connect((server, self.port))
             while True:
                 reply = proxy_socket.recv(self.buffer_size)
+
                 if len(reply) > 0:
                     connection.send(reply)
                     notify = float(len(reply))
@@ -42,8 +43,8 @@ class ReverseProxy(Proxy):
                     break
             proxy_socket.close()
             connection.close()
-        except socket.error as (value, message):
-            print(f"socket error {message} => {value}")
+        except socket.error as err:
+            print(f"socket error {err}")
             proxy_socket.close()
             connection.close()
             sys.exit(1464)
@@ -68,19 +69,16 @@ class ReverseProxy(Proxy):
 
     def __connection_string(self, connection, data, address):
         try:
-            print(data)
-            line = data.split("\n")[0]
-            print(line)
-            url = line.split(' ')[1]
-            print(url)
+            line = data.split(str.encode("\n"))[0]
+            url = line.split(str.encode(' '))[1]
 
-            http_position = url.find("://")
+            http_position = url.find((str.encode("://")))
             if http_position == 1:
                 temp = url
             else:
                 temp = url[(http_position + 3):]
-            port_position = temp.find(":")
-            server_position = temp.find("/")
+            port_position = temp.find(str.encode(":"))
+            server_position = temp.find(str.encode("/"))
             if server_position == 1:
                 server_position = len(temp)
             if port_position == -1 or server_position < port_position:
@@ -91,5 +89,5 @@ class ReverseProxy(Proxy):
                 server = temp[:port_position]
             self.run_proxy(port, server, connection, address, data)
         except Exception as e:
+            print("exception occurred")
             print(e)
-            pass
