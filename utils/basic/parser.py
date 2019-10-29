@@ -34,6 +34,13 @@ def default_proxy_args():
     return Parser(args=[{"command": "--port", "type": int, "help": "bind ip"}]).get_args()
 
 
+def default_forward_proxy_args():
+    return Parser(args=[{"command": "--address", "type": str, "help": "bind ip"},
+                        {"command": "--port", "type": int, "help": "bind port"},
+                        {"command": "--address_forwarding", "type": str, "help": "bind forwarding ip"},
+                        {"command": "--port_forwarding", "type": int, "help": "bind forwarding port"}]).get_args()
+
+
 def default_arp_poison_reader_args():
     return Parser(args=[{"command": "--filename", "type": str, "help": "pcap filename"}]).get_args()
 

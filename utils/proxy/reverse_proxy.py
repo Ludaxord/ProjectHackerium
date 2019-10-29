@@ -7,25 +7,15 @@ from utils.proxy.proxy import Proxy
 
 class ReverseProxy(Proxy):
 
-    def __init__(self, port):
+    def __init__(self, port, address=''):
         self.port = port
-
-    def init_proxy(self):
-        try:
-            print(f"listening on port {self.port}")
-            self.__start_proxy(self.port)
-        except Exception as e:
-            print(f"exception occurred: {e}, exit proxy")
-            sys.exit(1264)
-        except KeyboardInterrupt:
-            print("work interrupt exit proxy")
-            sys.exit(1265)
+        self.address = address
 
     def run_proxy(self, port=None, server=None, connection=None, address=None, data=None):
         global proxy_socket
         try:
             proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            proxy_socket.connect((server, self.port))
+            proxy_socket.connect((server, port))
             while True:
                 reply = proxy_socket.recv(self.buffer_size)
 
@@ -46,9 +36,9 @@ class ReverseProxy(Proxy):
             connection.close()
             sys.exit(1464)
 
-    def __start_proxy(self, port):
+    def start_proxy(self, port=None, address=None):
         proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        proxy_socket.bind(('', port))
+        proxy_socket.bind((address, port))
         proxy_socket.listen(self.max_connection)
         print("[*] initialize socket...")
         print(f"Server started successfully on port {port}")
