@@ -29,6 +29,14 @@ class RequestProxy(Proxy):
             except:
                 print("Skipping. Connection error")
 
+    def check_proxy(self, proxy):
+        url = 'https://httpbin.org/ip'
+        try:
+            response = requests.get(url, proxies={"http": proxy, "https": proxy})
+            return True
+        except:
+            return False
+
     def get_proxies(self):
         url = 'https://free-proxy-list.net/'
         response = requests.get(url)

@@ -55,7 +55,7 @@ class ConnectionProxy(Proxy):
                     self.__recv(s, data)
 
     def __accept(self, host):
-        forward_proxy = self.__start_proxy_forward(self.forward[0], self.forward[1])
+        forward_proxy = self.__start_proxy_forward(self.forward[0], int(self.forward[1]))
         client_socket, client_address = host.accept()
         if forward_proxy:
             self.input_list.append(client_socket)
@@ -66,6 +66,7 @@ class ConnectionProxy(Proxy):
             print("cannot establish connection with remote server")
             print(f"clossing connection with client {client_address}")
             client_socket.close()
+            sys.exit(1543)
 
     def __close(self, s):
         print(f"{s.getpeername()} peer has been disconected")
