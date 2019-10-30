@@ -1,6 +1,8 @@
 import time
+import os
+import sys
 
-import requests
+sys.path.append(os.getcwd())
 
 from utils.basic.parser import default_forward_proxy_args
 from utils.proxy.connection_proxy import ConnectionProxy
