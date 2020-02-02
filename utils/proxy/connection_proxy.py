@@ -64,12 +64,12 @@ class ConnectionProxy(Proxy):
             self.channel[forward_proxy] = client_socket
         else:
             print("cannot establish connection with remote server")
-            print(f"clossing connection with client {client_address}")
+            print(f"close connection with client {client_address}")
             client_socket.close()
             sys.exit(1543)
 
     def __close(self, s):
-        print(f"{s.getpeername()} peer has been disconected")
+        print(f"{s.getpeername()} peer has been disconnected")
         self.input_list.remove(s)
         self.input_list.remove(self.channel[s])
         out = self.channel[s]
