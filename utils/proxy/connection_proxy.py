@@ -79,7 +79,6 @@ class ConnectionProxy(Proxy):
         del self.channel[s]
 
     def __recv(self, s, data):
-        print(data)
         self.channel[s].send(data)
 
     def start_proxy(self, port=-1, address=''):
